@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ui2mvp7/shared_value.dart';
 
 class Pertemuan extends StatefulWidget {
   @override
@@ -70,7 +71,7 @@ class _PertemuanState extends State<Pertemuan> {
                     padding: EdgeInsets.only(right: 10),
                     child: Icon(
                       Icons.check_circle,
-                      color: Colors.blue,
+                      color: SharedColor.mainColor,
                       size: 35,
                     ),
                   ),

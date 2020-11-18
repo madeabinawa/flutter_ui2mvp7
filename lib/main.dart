@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ui2mvp7/views/Login.dart';
+import 'package:flutter_ui2mvp7/shared_value.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,8 +15,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         // primarySwatch: Colors.blue,
         brightness: Brightness.light,
-        primaryColor: Color(0xff021e52),
-        accentColor: Color(0xFFff8400),
+        primaryColor: SharedColor.mainColor,
+        accentColor: SharedColor.secondColor,
       ),
       home: Login(),
       debugShowCheckedModeBanner: false,
