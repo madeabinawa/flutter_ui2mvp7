@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ui2mvp7/shared_value.dart';
+import 'package:flutter_ui2mvp7/views/GantiPassword.dart';
 import 'package:flutter_ui2mvp7/views/Login.dart';
-import 'package:flutter_ui2mvp7/views/pcu/GantiPassword.dart';
 
 class Pengaturan extends StatefulWidget {
   Pengaturan({Key key}) : super(key: key);
@@ -45,11 +45,9 @@ class _PengaturanState extends State<Pengaturan> {
                     color: SharedColor.mainColor,
                   ),
                   title: Text('Log Out'),
-                  onTap: () {
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (context) => Login()),
-                        (Route<dynamic> route) => false);
-                  },
+                  onTap: () => Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => Login()),
+                      (Route<dynamic> route) => false),
                 ),
               ],
             ),
