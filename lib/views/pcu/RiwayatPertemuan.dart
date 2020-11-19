@@ -61,11 +61,13 @@ class _RiwayatPertemuanState extends State<RiwayatPertemuan> {
                           ],
                         ),
                         SizedBox(height: 10),
+                        // Cek ulasan, jika ulasan kosong tampilkan button
+                        // Jika telah diulas, tampilkan bintang
                         RaisedButton(
                           child: Text('Berikan Ulasan'),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20.0)),
-                              elevation: 0,
+                          elevation: 0,
                           color: SharedColor.mainColor,
                           textColor: Colors.white,
                           onPressed: () {},
