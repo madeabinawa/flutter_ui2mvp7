@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ui2mvp7/views/Home.dart';
+import 'package:flutter_ui2mvp7/shared_value.dart';
+
+import 'package:flutter_ui2mvp7/views/pba/MainPba.dart';
+import 'package:flutter_ui2mvp7/views/pcu/MainPcu.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -19,21 +22,21 @@ class _LoginState extends State<Login> {
     final node = FocusScope.of(context);
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      // appBar: AppBar(
-      //   centerTitle: true,
-      //   title: Text('Login'),
-      // ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
               height: screen.height / 3,
+              width: screen.width,
               decoration: BoxDecoration(
-                color: Color(0xff021e52),
+                color: SharedColor.mainColor,
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(25),
                   bottomRight: Radius.circular(25),
+                ),
+                image: DecorationImage(
+                  image: AssetImage('assets/img/logo.png'),
                 ),
               ),
             ),
@@ -74,16 +77,26 @@ class _LoginState extends State<Login> {
                           ),
                           padding: EdgeInsets.only(top: 15, bottom: 15),
                           elevation: 0,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0)),
                           onPressed: isControllerEmpty()
                               ? () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => Home(),
+                                      builder: (context) => MainPba(),
+                                    ),
+                                  )
+                              : null,
+                          onLongPress: isControllerEmpty()
+                              ? () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => MainPcu(),
                                     ),
                                   )
                               : null,
                           color: isControllerEmpty()
-                              ? Color(0xff021e52)
+                              ? SharedColor.mainColor
                               : Colors.grey,
                         ),
                       ),
