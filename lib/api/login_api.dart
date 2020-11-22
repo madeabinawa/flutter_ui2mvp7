@@ -47,8 +47,7 @@ class LoginProvider extends ChangeNotifier {
       var body = json.encode(data);
       //send json to server and save response
       var response = await http.post(url, body: body);
-      //decode user response json from server
-      // var message = json.decode(response.body)['error'];
+      //decode response json from server
       var message = json.decode(response.body);
       if (message.containsKey("error")) {
         return 'Tidak dapat melakukan verfikasi password';
@@ -62,6 +61,22 @@ class LoginProvider extends ChangeNotifier {
       //return error
       print(e.toString());
     }
+  }
+
+  Future<String> resetPasswordEmail(String email) async {
+    //set endpoint api ubah password
+    final url = 'http://18.191.9.5:8090/user/resetbymail';
+    //Mapping input data
+    Map data = {'email1': email};
+
+    //Encode input data map as json
+    var body = json.encode(data);
+    //send json to server and save response
+    var response = await http.post(url, body: body);
+    //decode response json from server
+    var message = json.decode(response.body)['message'];
+    print(message);
+    return message;
   }
 }
 
