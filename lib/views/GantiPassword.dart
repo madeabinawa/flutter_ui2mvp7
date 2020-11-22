@@ -1,19 +1,63 @@
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ui2mvp7/api/login_api.dart';
 import 'package:flutter_ui2mvp7/shared_value.dart';
+import 'package:provider/provider.dart';
 
 class GantiPassword extends StatefulWidget {
-  GantiPassword({Key key}) : super(key: key);
-
   @override
   _GantiPasswordState createState() => _GantiPasswordState();
 }
 
 class _GantiPasswordState extends State<GantiPassword> {
+  TextEditingController _oldPassword = TextEditingController();
+  TextEditingController _newPassword = TextEditingController();
+  TextEditingController _confirmNewPassword = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    //Init Login Provider
+    final loginProvider = Provider.of<LoginProvider>(context, listen: false);
+
+    //Akses api ubah password
+    updatePassword() async {
+      String result = await loginProvider.changePassword(
+          _oldPassword.text, _newPassword.text);
+      showFlushbar(result);
+    }
+
+    // Cek jika newPassword dan confirmNewPassword bernilai sama
+    isMatch() {
+      if (_newPassword.text != '' && _confirmNewPassword.text != '') {
+        return _newPassword.text == _confirmNewPassword.text;
+      } else {
+        return false;
+      }
+    }
+
+    //Cek jika semua field sudah terpenuhi
+    isVerified() {
+      String msg = '';
+      if (_oldPassword.text != '') {
+        if (isMatch()) {
+          //Jalankan method update password jika semua terpenuhi
+          updatePassword();
+        } else {
+          // Jika field konfirmasi password tidak sesuai field password baru
+          msg = 'Konfirmasi kata sandi tidak benar';
+        }
+      } else {
+        // Jika field password lama kosong
+        msg = 'Kata sandi tidak boleh kosong';
+      }
+      if (msg != '') {
+        showFlushbar(msg);
+      }
+    }
+
     return Scaffold(
         appBar: AppBar(
-          title: Text('Ganti Password'),
+          title: Text('Ubah Password'),
           centerTitle: true,
         ),
         body: Padding(
@@ -31,7 +75,7 @@ class _GantiPasswordState extends State<GantiPassword> {
                       prefixIcon: Icon(Icons.lock_outline),
                       //suffixIcon: Icon(Icons.lock_outline),
                     ),
-                    //controller: _password,
+                    controller: _oldPassword,
                     //onEditingComplete: () => node.unfocus(),
                     obscureText: true,
                     style: TextStyle(),
@@ -41,8 +85,8 @@ class _GantiPasswordState extends State<GantiPassword> {
                     decoration: InputDecoration(
                         labelText: 'Kata Sandi Baru',
                         prefixIcon: Icon(Icons.lock_outline)),
-                    //controller: _password,
-                    //onEditingComplete: () => node.unfocus(),
+                    controller: _newPassword,
+                    // onEditingComplete: () => isMatch,
                     obscureText: true,
                     style: TextStyle(),
                   ),
@@ -51,8 +95,8 @@ class _GantiPasswordState extends State<GantiPassword> {
                     decoration: InputDecoration(
                         labelText: 'Konfirmasi Kata Sandi Baru',
                         prefixIcon: Icon(Icons.lock_outline)),
-                    //controller: _password,
-                    //onEditingComplete: () => node.unfocus(),
+                    controller: _confirmNewPassword,
+                    // onEditingComplete: () => isMatch,
                     obscureText: true,
                     style: TextStyle(),
                   ),
@@ -71,7 +115,7 @@ class _GantiPasswordState extends State<GantiPassword> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0)),
                             color: SharedColor.mainColor,
-                            onPressed: () {}),
+                            onPressed: () => isVerified()),
                       ),
                     ],
                   ),
@@ -80,5 +124,15 @@ class _GantiPasswordState extends State<GantiPassword> {
             ),
           ),
         ));
+  }
+
+  // Flushbar untuk menampilkan respons
+  showFlushbar(msg) {
+    return Flushbar(
+      duration: Duration(seconds: 4),
+      backgroundColor: msg == 'Berhasil' ? Colors.green[800] : Colors.red[800],
+      flushbarPosition: FlushbarPosition.BOTTOM,
+      message: msg == 'Berhasil' ? 'Berhasil perbarui password' : msg,
+    ).show(context);
   }
 }

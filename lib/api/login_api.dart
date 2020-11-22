@@ -30,6 +30,39 @@ class LoginProvider extends ChangeNotifier {
       return LoginResult(message: 'ini errornya ${e.toString()}');
     }
   }
+
+  Future<String> changePassword(
+      String passwordLama, String passwordBaru) async {
+    //set endpoint api ubah password
+    final url = 'http://18.191.9.5:8090/user/change-password';
+    //Mapping input data
+    Map data = {
+      'id': _loginUser.id,
+      'new_pass': passwordBaru,
+      'old_pass': passwordLama
+    };
+
+    try {
+      //Encode input data map as json
+      var body = json.encode(data);
+      //send json to server and save response
+      var response = await http.post(url, body: body);
+      //decode user response json from server
+      // var message = json.decode(response.body)['error'];
+      var message = json.decode(response.body);
+      if (message.containsKey("error")) {
+        return 'Tidak dapat melakukan verfikasi password';
+      } else {
+        return 'Berhasil';
+      }
+      // print(message);
+
+      //return message;
+    } catch (e) {
+      //return error
+      print(e.toString());
+    }
+  }
 }
 
 class LoginResult {
