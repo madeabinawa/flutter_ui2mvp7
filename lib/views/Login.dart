@@ -101,7 +101,8 @@ class _LoginState extends State<Login> {
                             padding: EdgeInsets.only(top: 15, bottom: 15),
                             elevation: 0,
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
                             onPressed: isControllerEmpty()
                                 ? () async {
                                     //Menerima result dari login api
@@ -127,14 +128,6 @@ class _LoginState extends State<Login> {
                                     //jika role_id tidak ditemukan tampilkan peringatan
                                     else {
                                       showFlushbar(msg: '');
-                                      // Flushbar(
-                                      //   duration: Duration(seconds: 4),
-                                      //   backgroundColor: Colors.red[800],
-                                      //   flushbarPosition:
-                                      //       FlushbarPosition.BOTTOM,
-                                      //   message:
-                                      //       'Kesalahan pada email atau password',
-                                      // ).show(context);
                                     }
                                   }
                                 : null,
@@ -146,7 +139,7 @@ class _LoginState extends State<Login> {
                       ],
                     ),
                     SizedBox(height: 30),
-                    // Forogot Password
+                    // Forogot Password Section
                     GestureDetector(
                         onTap: () {
                           showModalBottomSheet(
@@ -192,7 +185,6 @@ class _LoginState extends State<Login> {
                                                       BorderRadius.circular(
                                                           10.0)),
                                               onPressed: () async {
-                                                // print(_resetEmail.text);
                                                 String message =
                                                     await loginProvider
                                                         .resetPasswordEmail(
