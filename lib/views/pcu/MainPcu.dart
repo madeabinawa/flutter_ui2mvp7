@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_ui2mvp7/api/login_api.dart';
 import 'package:flutter_ui2mvp7/shared_value.dart';
 import 'package:flutter_ui2mvp7/views/pcu/BerandaPcu.dart';
 import 'package:flutter_ui2mvp7/views/pcu/Pengaturan.dart';
@@ -17,6 +19,8 @@ class _MainPcuState extends State<MainPcu> {
 
   @override
   Widget build(BuildContext context) {
+    final dataUserLogin =
+        Provider.of<LoginProvider>(context, listen: false).dataLoginUser;
     // List of Page Widget
     List<Widget> _pageOptions = [
       BerandaPcu(),
@@ -56,7 +60,7 @@ class _MainPcuState extends State<MainPcu> {
                                 style: TextStyle(fontWeight: FontWeight.w300),
                               ),
                               TextSpan(
-                                text: 'Caca Marica',
+                                text: dataUserLogin.nama,
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                             ],

@@ -50,13 +50,10 @@ class LoginProvider extends ChangeNotifier {
       //decode response json from server
       var message = json.decode(response.body);
       if (message.containsKey("error")) {
-        return 'Tidak dapat melakukan verfikasi password';
+        return 'Password lama tidak sesuai';
       } else {
         return 'Berhasil';
       }
-      // print(message);
-
-      //return message;
     } catch (e) {
       //return error
       print(e.toString());
