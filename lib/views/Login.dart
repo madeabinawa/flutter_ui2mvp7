@@ -16,6 +16,7 @@ class _LoginState extends State<Login> {
   TextEditingController _password = TextEditingController();
   TextEditingController _resetEmail = TextEditingController();
   bool _obscureText = true;
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -93,11 +94,19 @@ class _LoginState extends State<Login> {
                       children: [
                         Expanded(
                           child: RaisedButton(
-                            child: Text(
-                              'Login',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 16),
-                            ),
+                            child: _isLoading
+                                ? SizedBox(
+                                    height: 17,
+                                    width: 17,
+                                    child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Colors.white),
+                                    ))
+                                : Text(
+                                    'Login',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 16),
+                                  ),
                             padding: EdgeInsets.only(top: 15, bottom: 15),
                             elevation: 0,
                             shape: RoundedRectangleBorder(
@@ -105,6 +114,9 @@ class _LoginState extends State<Login> {
                             ),
                             onPressed: isControllerEmpty()
                                 ? () async {
+                                    setState(() {
+                                      _isLoading = true;
+                                    });
                                     //Menerima result dari login api
                                     LoginResult loginResult =
                                         await loginProvider.login(
@@ -127,11 +139,14 @@ class _LoginState extends State<Login> {
                                     }
                                     //jika role_id tidak ditemukan tampilkan peringatan
                                     else {
+                                      setState(() {
+                                        _isLoading = false;
+                                      });
                                       showFlushbar(msg: '');
                                     }
                                   }
                                 : null,
-                            color: isControllerEmpty()
+                            color: isControllerEmpty() && !_isLoading
                                 ? SharedColor.mainColor
                                 : Colors.grey,
                           ),
