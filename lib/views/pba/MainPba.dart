@@ -86,7 +86,7 @@ class _MainPbaState extends State<MainPba> {
                                         fontSize: 14,
                                         fontWeight: FontWeight.w600)),
                                 SizedBox(height: 5),
-                                Text(dataUserPcu[index].email2,
+                                Text(dataUserPcu[index].phone1,
                                     style: TextStyle(fontSize: 14)),
                               ],
                             ),

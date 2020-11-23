@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ui2mvp7/api/schedule_api.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_ui2mvp7/views/Login.dart';
 import 'package:flutter_ui2mvp7/shared_value.dart';
@@ -20,6 +21,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => UserProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ScheduleProvider(),
         ),
       ],
       child: MaterialApp(

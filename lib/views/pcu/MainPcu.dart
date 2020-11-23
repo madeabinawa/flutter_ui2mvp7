@@ -31,10 +31,10 @@ class _MainPcuState extends State<MainPcu> {
     var screen = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(
+      body: Stack(
         children: [
           Container(
-            height: screen.height * 0.20,
+            height: screen.height * 0.28,
             width: screen.width,
             decoration: BoxDecoration(
               color: SharedColor.mainColor,
@@ -94,7 +94,6 @@ class _MainPcuState extends State<MainPcu> {
               ),
             ),
           ),
-          SizedBox(height: 10),
           _pageOptions.elementAt(_selectedIndex),
         ],
       ),
@@ -127,8 +126,6 @@ class _MainPcuState extends State<MainPcu> {
         ],
         currentIndex: _selectedIndex,
         onTap: (index) {
-          print(index);
-          print(_selectedIndex);
           setState(() {
             _selectedIndex = index;
           });
