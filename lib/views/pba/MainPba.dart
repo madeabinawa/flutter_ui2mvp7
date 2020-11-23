@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ui2mvp7/shared_value.dart';
-import 'package:flutter_ui2mvp7/views/GantiPassword.dart';
+import 'package:flutter_ui2mvp7/api/user_api.dart';
+import 'package:flutter_ui2mvp7/views/UserDetail.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_ui2mvp7/views/Login.dart';
-import 'package:flutter_ui2mvp7/views/pba/AddPcu.dart';
+import 'package:flutter_ui2mvp7/shared_value.dart';
+import 'package:flutter_ui2mvp7/api/login_api.dart';
+import 'package:flutter_ui2mvp7/views/GantiPassword.dart';
+import 'package:flutter_ui2mvp7/views/pba/RiwayatUlasan.dart';
 import 'package:flutter_ui2mvp7/views/pba/JadwalPertemuan.dart';
 import 'package:flutter_ui2mvp7/views/pba/PermintaanDitolak.dart';
 import 'package:flutter_ui2mvp7/views/pba/PermintaanPertemuan.dart';
-import 'package:flutter_ui2mvp7/views/pba/RiwayaUlasan.dart';
 
 class MainPba extends StatefulWidget {
   @override
@@ -16,6 +19,9 @@ class MainPba extends StatefulWidget {
 class _MainPbaState extends State<MainPba> {
   @override
   Widget build(BuildContext context) {
+    final dataUserLogin =
+        Provider.of<LoginProvider>(context, listen: false).dataLoginUser;
+    final userApi = Provider.of<UserProvider>(context, listen: false);
     var screen = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
@@ -31,42 +37,71 @@ class _MainPbaState extends State<MainPba> {
         ],
         elevation: 0,
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Card(
-            elevation: 8,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListTile(
-                leading: Icon(
-                  Icons.person,
-                  size: 30,
-                  color: SharedColor.mainColor,
-                ),
-                title: Text('Wawan Marica',
-                    style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
-                subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 8),
-                      Text('email1@mail.com',
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w600)),
-                      SizedBox(height: 5),
-                      Text('email2@mail.com', style: TextStyle(fontSize: 14)),
-                    ]),
-                trailing: GestureDetector(
-                    child: Icon(Icons.delete, color: Colors.red[800]),
-                    onTap: () {
-                      showAlertDialog(context);
-                    }),
-              ),
-            ),
-          ),
-        ],
+      body: Container(
+        child: FutureBuilder(
+          future: userApi.getDataPcu(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            }
+            return Consumer<UserProvider>(
+              builder: (context, userData, _) {
+                dynamic dataUserPcu = userData.dataPCu;
+                return ListView.builder(
+                  itemCount: dataUserPcu.length,
+                  itemBuilder: (context, index) {
+                    return Card(
+                      elevation: 8,
+                      child: InkWell(
+                        onTap: () {
+                          //print(dataUserPcu[index].runtimeType);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => UserDetail(
+                                detailUser: dataUserPcu[index],
+                              ),
+                            ),
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ListTile(
+                            leading: Icon(
+                              Icons.person,
+                              size: 30,
+                              color: SharedColor.mainColor,
+                            ),
+                            title: Text(
+                              dataUserPcu[index].nama,
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w600),
+                            ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(height: 8),
+                                Text(dataUserPcu[index].email1,
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600)),
+                                SizedBox(height: 5),
+                                Text(dataUserPcu[index].email2,
+                                    style: TextStyle(fontSize: 14)),
+                              ],
+                            ),
+                            trailing: Icon(Icons.chevron_right,
+                                color: SharedColor.mainColor),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            );
+          },
+        ),
       ),
       // Left Drawer
       drawer: Drawer(
@@ -79,9 +114,10 @@ class _MainPbaState extends State<MainPba> {
                     children: [
                       UserAccountsDrawerHeader(
                         currentAccountPicture: CircleAvatar(
-                          backgroundImage: NetworkImage(''),
+                          backgroundImage:
+                              AssetImage('assets/img/user-icon.png'),
                         ),
-                        accountName: Text('Hai, Caca Marica'),
+                        accountName: Text('Halo, ${dataUserLogin.nama}'),
                         accountEmail: Text('Personal Banking Assistant'),
                       ),
                     ],
@@ -131,20 +167,6 @@ class _MainPbaState extends State<MainPba> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => PermintaanDitolak(),
-                      ),
-                    ),
-                  ),
-                  ListTile(
-                    title: Text('Priority Customer Available'),
-                    leading: Icon(
-                      Icons.person_add,
-                      size: 25.0,
-                      color: SharedColor.mainColor,
-                    ),
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AddPcu(),
                       ),
                     ),
                   ),

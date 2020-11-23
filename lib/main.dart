@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_ui2mvp7/api/login_api.dart';
 import 'package:flutter_ui2mvp7/views/Login.dart';
 import 'package:flutter_ui2mvp7/shared_value.dart';
+import 'package:flutter_ui2mvp7/api/user_api.dart';
+import 'package:flutter_ui2mvp7/api/login_api.dart';
 
 void main() {
   runApp(MyApp());
@@ -17,9 +18,12 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => LoginProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => UserProvider(),
+        ),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'BRI Booking Service',
         theme: ThemeData(
           // primarySwatch: Colors.blue,
           brightness: Brightness.light,
